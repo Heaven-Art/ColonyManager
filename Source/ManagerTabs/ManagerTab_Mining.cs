@@ -351,8 +351,8 @@ namespace FluffyManager
             Widgets_Section.EndSectionColumn( "Mining.Minerals", position );
 
             // do the button
-            if ( Event.current.control && Widgets.ButtonInvisible( buttonRect ) )
-                Find.WindowStack.Add( new Dialog_MiningDebugOptions( _selected ) );
+            if (Event.current.control && Widgets.ButtonInvisible(buttonRect))
+                Find.WindowStack.Add(new Dialog_MiningDebugOptions(_selected));
             if ( !_selected.Managed )
             {
                 if ( Widgets.ButtonText( buttonRect, "FM.Manage".Translate() ) )
