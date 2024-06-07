@@ -2,23 +2,32 @@
     "name": "Colony Manager",
     "sourceDir": ".",
     "targetDir": "ColonyManager",
-    "url": "https://github.com/fluffy-mods/ColonyManager",
+    "url": "https://github.com/Heaven-Art/ColonyManager",
     "version": {
-        "major": 5,
+        "major": 6,
         "minor": 4,
-        "build": 677
+        "build": 678
     },
     "author": {
-        "name": "Fluffy",
-        "url": "https://github.com/fluffy-mods/",
-        "email": "fluffy.l2032@gmail.com"
+        "name": "We're in Heaven",
+        "url": "https://github.com/Heaven-Art/",
+        "email": "b.sagres@gmail.com"
     },
     "git": {
-        "owner": "fluffy-mods",
+        "owner": "We're in Heaven",
         "repo": "ColonyManager",
-        "url": "https://github.com/fluffy-mods/ColonyManager"
+        "url": "https://github.com/Heaven-Art/ColonyManager"
     },
     "changelog": [
+        {
+            "date": "2024-05-11T16:26:23.000Z",
+            "message": "Build for 1.5",
+            "author": {
+                "name": "We're in Heaven",
+                "email": "b.sagres@gmail.com"
+            },
+            "hash": "8DE4BCF325E195961410880A3D6A8ED0A1C29778F147FCA84C1FB1644D16A873"
+        },        
         {
             "date": "2022-10-14T20:26:23.000Z",
             "message": "initial build for 1.4",

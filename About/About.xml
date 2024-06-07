@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ModMetaData>
     <name>Colony Manager</name>
-    <author>Fluffy</author>
-    <packageId>Fluffy.ColonyManager</packageId>
-    <description>Colony Manager allows you to make colonists do the more tedious parts of managing a colony, making sure you're never out of vital resources again*.
+    <author>We're in Heaven</author>
+    <packageId>Heaven.ColonyManager</packageId>
+    <description>Disclaimer: This mod was created by Fluffy, if any new version is available by the original owner (Fluffy) prefer subscribing that version.
+    
+    Colony Manager allows you to make colonists do the more tedious parts of managing a colony, making sure you're never out of vital resources again*.
 
 &lt;size=28&gt;Important&lt;/size&gt;
 
@@ -51,7 +53,7 @@ In theory there is no real limit to the number of manager jobs that can be creat
 &lt;size=28&gt;Notes&lt;/size&gt;
 
 - Requires a new save. Adds a worktype, which in my tests gave errors on old savegames. If you also have my Work Tab mod, you should be able to add this mod in an ongoing save.</description>
-    <url>https://github.com/fluffy-mods/ColonyManager</url>
+    <url>https://github.com/Heaven-Art/ColonyManager</url>
     <supportedVersions>
         <li>1.5</li>
     </supportedVersions>

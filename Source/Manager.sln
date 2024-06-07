@@ -5,20 +5,6 @@ VisualStudioVersion = 17.9.34701.34
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Manager", "Manager.csproj", "{25FE2988-9C8E-4470-A810-6A0F6F1940DB}"
 EndProject
-Project("{911E67C6-3D85-4FCE-B560-20A9C3E3FF48}") = "RimWorldWin64", "..\..\..\RimWorldWin64.exe", "{3BB21168-4A40-4E66-9183-B775F1426CEC}"
-	ProjectSection(DebuggerProjectSystem) = preProject
-		PortSupplier = 00000000-0000-0000-0000-000000000000
-		Executable = D:\Rimworld\RimWorld\RimWorldWin64.exe
-		RemoteMachine = 
-		StartingDirectory = D:\Rimworld\RimWorld
-		Environment = gcexpconfigusedinsession=3	username=bjcgo	chocolateyinstall=C:\ProgramData\chocolatey	home=C:\Users\bjcgo	zes_enable_sysman=1	vs140comntools=C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\	python_x64_libs=C:\Users\bjcgo\AppData\Local\Programs\Python\Python39\libs	os=Windows_NT	programdata=C:\ProgramData	python_x64_dir=C:\Users\bjcgo\AppData\Local\Programs\Python\Python39	pathext=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW	programfiles(x86)=C:\Program Files (x86)	windir=C:\WINDOWS	commonprogramfiles=C:\Program Files\Common Files	homepath=\Users\bjcgo	dnspy_unity_dbg2=--debugger-agent=transport=dt_socket,server=y,address=127.0.0.1:56000,suspend=y,no-hide-debugger	systemroot=C:\WINDOWS	pkgdefapplicationconfigfile=C:\Users\bjcgo\AppData\Local\Microsoft\VisualStudio\17.0_92c57b22\devenv.exe.config	programw6432=C:\Program Files	vsappidname=devenv.exe	vsappiddir=C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\	onedrive=C:\Users\bjcgo\OneDrive	userdomain=COTRIMPC	userdomain_roamingprofile=COTRIMPC	number_of_processors=16	fps_browser_user_profile_string=Default	psmodulepath=C:\Program Files\WindowsPowerShell\Modules;C:\WINDOWS\system32\WindowsPowerShell\v1.0\Modules	visualstudioversion=17.0	ncore_work=C:\flying-cookie\ncore	tcl_library=C:\Users\bjcgo\AppData\Local\Programs\Python\Python39\tcl\tcl8.6	vs_perf_session_gcheapcount=2	processor_architecture=AMD64	driverdata=C:\Windows\System32\Drivers\DriverData	servicehublogsessionkey=69E7705B	systemdrive=C:	efc_19628=1	homedrive=C:	commonprogramfiles(x86)=C:\Program Files (x86)\Common Files	temp=C:\Users\bjcgo\AppData\Local\Temp	tmp=C:\Users\bjcgo\AppData\Local\Temp	vslang=1033	commonprogramw6432=C:\Program Files\Common Files	pythonpath=C:\Biscuit\ncoreruntime\NCoreRuntime\data\scripts	logonserver=\\COTRIMPC	comspec=C:\WINDOWS\system32\cmd.exe	path=C:\VulkanSDK\1.3.204.0\Bin;C:\Python310\Scripts\;C:\Python310\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\ProgramData\chocolatey\bin;C:\Program Files\PuTTY\;C:\vcpkg;C:\vcpkg\installed\x64-windows\tools\protobuf;D:\platform-tools;C:\ProgramData\chocolatey\lib\mpv.install\tools;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\ProgramData\nvm;C:\Program Files\nodejs;C:\Program Files (x86)\GitExtensions\;C:\Program Files\dotnet\;C:\Program Files\Git\cmd;C:\Program Files\Docker\Docker\resources\bin;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Users\bjcgo\AppData\Local\Programs\Python\Python311\Scripts\;C:\Users\bjcgo\AppData\Local\Programs\Python\Python311\;C:\Users\bjcgo\AppData\Local\Programs\Python\Python39\Scripts\;C:\Users\bjcgo\AppData\Local\Programs\Python\Python39\;C:\Users\bjcgo\AppData\Local\Microsoft\WindowsApps;C:\Users\bjcgo\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\bjcgo\AppData\Roaming\npm;;C:\Users\bjcgo\.dotnet\tools	threadedwaitdialogdpicontext=-4	vsskuedition=Community	processor_level=6	localappdata=C:\Users\bjcgo\AppData\Local	godot=D:\Godot\Godot_v4.2.2-stable_mono_win64.exe	visualstudiodir=C:\Users\bjcgo\OneDrive\Documentos\Visual Studio 2022	python_x64_inc=C:\Users\bjcgo\AppData\Local\Programs\Python\Python39\include	vspermonitordpiawarenessenabled.1128=TRUE	processor_revision=a502	chocolateylastpathupdate=133116810632613363	sessionname=Console	userprofile=C:\Users\bjcgo	processor_identifier=Intel64 Family 6 Model 165 Stepping 2, GenuineIntel	ncore=C:\flying-cookie\ncore	appdata=C:\Users\bjcgo\AppData\Roaming	godot_path=D:\Godot\	programfiles=C:\Program Files	msbuildloadmicrosofttargetsreadonly=true	public=C:\Users\Public	allusersprofile=C:\ProgramData	fps_browser_app_profile_string=Internet Explorer	visualstudioedition=Microsoft Visual Studio Community 2022	computername=COTRIMPC	
-		LaunchingEngine = 00000000-0000-0000-0000-000000000000
-		UseLegacyDebugEngines = No
-		LaunchSQLEngine = No
-		AttachLaunchAction = Yes
-		IORedirection = Auto
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "C:\Program Files (x86)\Steam\steamapps\common\Assembly-CSharp\Assembly-CSharp.csproj", "{84EC4221-41F3-4F12-AC02-59F53C5F2149}"
 EndProject
 Global
@@ -37,11 +23,8 @@ Global
 		{25FE2988-9C8E-4470-A810-6A0F6F1940DB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{25FE2988-9C8E-4470-A810-6A0F6F1940DB}.Release|x64.ActiveCfg = Release|Any CPU
 		{25FE2988-9C8E-4470-A810-6A0F6F1940DB}.Release|x64.Build.0 = Release|Any CPU
-		{3BB21168-4A40-4E66-9183-B775F1426CEC}.Debug|Any CPU.ActiveCfg = Release|x64
-		{3BB21168-4A40-4E66-9183-B775F1426CEC}.Debug|x64.ActiveCfg = Release|x64
-		{3BB21168-4A40-4E66-9183-B775F1426CEC}.Release|Any CPU.ActiveCfg = Release|x64
-		{3BB21168-4A40-4E66-9183-B775F1426CEC}.Release|x64.ActiveCfg = Release|x64
 		{84EC4221-41F3-4F12-AC02-59F53C5F2149}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84EC4221-41F3-4F12-AC02-59F53C5F2149}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84EC4221-41F3-4F12-AC02-59F53C5F2149}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{84EC4221-41F3-4F12-AC02-59F53C5F2149}.Debug|x64.Build.0 = Debug|Any CPU
 		{84EC4221-41F3-4F12-AC02-59F53C5F2149}.Release|Any CPU.ActiveCfg = Release|Any CPU
