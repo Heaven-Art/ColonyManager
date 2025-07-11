@@ -121,7 +121,9 @@ namespace FluffyManager
             var plant = designation.target.Thing as Plant;
             return "Fluffy.Manager.DesignationLabel".Translate(
                 plant.LabelCap,
-                Distance( plant, manager.map.GetBaseCenter() ).ToString( "F0" ),
+                // TODO
+                // review this, was commented due to the need of a source pawn for pathing calculations
+                // Distance( plant, manager.map.GetBaseCenter() ).ToString( "F0" ),
                 plant.YieldNow(),
                 plant.def.plant.harvestedThingDef.LabelCap );
         }
@@ -258,7 +260,7 @@ namespace FluffyManager
             History.Update( Trigger.CurrentCount, CurrentDesignatedCount );
         }
 
-        public override bool TryDoJob()
+        public override bool TryDoJob(Pawn workingPawn)
         {
             // keep track of work done
             var workDone = false;
@@ -276,7 +278,7 @@ namespace FluffyManager
             var count = Trigger.CurrentCount + CurrentDesignatedCount;
             if ( count < Trigger.TargetCount )
             {
-                var targets = GetValidForagingTargetsSorted();
+                var targets = GetValidForagingTargetsSorted(workingPawn);
 
                 for ( var i = 0; i < targets.Count && count < Trigger.TargetCount; i++ )
                 {
@@ -309,7 +311,7 @@ namespace FluffyManager
                 else if ( !ForagingArea?.ActiveCells.Contains( des.target.Thing.Position ) ?? false ) des.Delete();
         }
 
-        private List<Plant> GetValidForagingTargetsSorted()
+        private List<Plant> GetValidForagingTargetsSorted(Pawn workingPawn)
         {
             var position = manager.map.GetBaseCenter();
 
@@ -318,7 +320,7 @@ namespace FluffyManager
 
                            // OrderBy defaults to ascending, switch sign on current yield to get descending
                           .Select( p => p as Plant )
-                          .OrderBy( p => -p.YieldNow() / Distance( p, position ) )
+                          .OrderBy( p => -p.YieldNow() / Distance( p, position,workingPawn ) )
                           .ToList();
         }
 

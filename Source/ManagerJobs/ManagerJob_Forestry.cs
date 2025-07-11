@@ -161,7 +161,9 @@ namespace FluffyManager
             var plant = designation.target.Thing as Plant;
             return "Fluffy.Manager.DesignationLabel".Translate(
                 plant.LabelCap,
-                Distance( plant, manager.map.GetBaseCenter() ).ToString( "F0" ),
+                // TODO
+                // review this, was commented due to the need of a source pawn for pathing calculations
+                // Distance( plant, manager.map.GetBaseCenter() ).ToString( "F0" ),
                 plant.YieldNow(),
                 plant.def.plant.harvestedThingDef.LabelCap );
         }
@@ -372,7 +374,7 @@ namespace FluffyManager
             History.Update( Trigger.CurrentCount, GetWoodInDesignations() );
         }
 
-        public override bool TryDoJob()
+        public override bool TryDoJob(Pawn workingPawn)
         {
             // keep track if any actual work was done.
             var workDone = false;
@@ -383,7 +385,7 @@ namespace FluffyManager
             switch ( Type )
             {
                 case ForestryJobType.Logging:
-                    DoLoggingJob( ref workDone );
+                    DoLoggingJob( ref workDone, workingPawn );
                     break;
                 case ForestryJobType.ClearArea:
                     if ( ClearWindCells )
@@ -454,7 +456,7 @@ namespace FluffyManager
                     DoClearAreaDesignations( area.Key.ActiveCells, ref workDone );
         }
 
-        private void DoLoggingJob( ref bool workDone )
+        private void DoLoggingJob( ref bool workDone, Pawn workingPawn )
         {
             // remove designations not in zone.
             if ( LoggingArea != null )
@@ -467,7 +469,7 @@ namespace FluffyManager
             var count = Trigger.CurrentCount + GetWoodInDesignations();
 
             // get sorted list of loggable trees
-            var trees = GetLoggableTreesSorted();
+            var trees = GetLoggableTreesSorted(workingPawn);
 
             // designate untill we're either out of trees or we have enough designated.
             for ( var i = 0; i < trees.Count && count < Trigger.TargetCount; i++ )
@@ -478,7 +480,7 @@ namespace FluffyManager
             }
         }
 
-        private List<Plant> GetLoggableTreesSorted()
+        private List<Plant> GetLoggableTreesSorted(Pawn workingPawn)
         {
             var position = manager.map.GetBaseCenter();
 
@@ -487,7 +489,7 @@ namespace FluffyManager
 #endif
             var list = manager.map.listerThings.AllThings.Where( IsValidForestryTarget )
                               .Select( p => p as Plant )
-                              .OrderByDescending( p => p.YieldNow() / Distance( p, position ) )
+                              .OrderBy( p => -p.YieldNow() / Distance( p, position, workingPawn ) )
                               .ToList();
 
 #if DEBUG_PERFORMANCE

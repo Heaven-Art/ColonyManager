@@ -245,7 +245,7 @@ namespace FluffyManager
                                                                      Mathf.Clamp(
                                                                          GenMath.LerpDouble(
                                                                              0.3f, 1f, 0f, 9f,
-                                                                             pawnkind.RaceProps.wildness), 0f, 20f))
+                                                                             pawnkind.race.statBases.Find( d => d.ToString() == "Wildness").value), 0f, 20f))
                            .ToList();
         }
 

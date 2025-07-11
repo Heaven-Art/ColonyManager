@@ -107,7 +107,7 @@ namespace FluffyManager
             }
         }
 
-        public override void Tick()
+        protected override void Tick()
         {
             base.Tick();
 
@@ -125,8 +125,10 @@ namespace FluffyManager
                     SecondaryColourIndex = ( SecondaryColourIndex + 1 ) % _colors.Length;
 
                 // primary colour
-                if ( tick % ManagerStation.Props.speed == 0 )
-                    PrimaryColour = Manager.For( Map ).TryDoWork() ? Color.green : Color.red;
+                // TODO
+                // review this, was commented due to the need of a source pawn for pathing calculations
+                // if ( tick % ManagerStation.Props.speed == 0 )
+                //     PrimaryColour = Manager.For( Map ).TryDoWork() ? Color.green : Color.red;
 
                 // blinking on primary
                 if ( tick % 30 == 0 ) PrimaryColourBlinker  = PrimaryColour;
@@ -143,8 +145,11 @@ namespace FluffyManager
 
             if ( _glowDirty )
             {
-                // Update glow grid
-                Map.glowGrid.DirtyCache( Position );
+                // TODO
+                // review this, was commented due to the need of a source pawn for pathing calculations
+                // Update glow grid 
+                // Map.glowGrid.DirtyCache( Position );
+                Map.glowGrid.DirtyCell( Position );
 
                 // the following two should not be necesarry, but for some reason do seem to be.
                 Map.mapDrawer.MapMeshDirty( Position, 8 );

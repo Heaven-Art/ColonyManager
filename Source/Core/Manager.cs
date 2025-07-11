@@ -140,9 +140,9 @@ namespace FluffyManager
                 tab.Tick();
         }
 
-        public bool TryDoWork()
+        public bool TryDoWork(Pawn pManager)
         {
-            return JobStack.TryDoNextJob();
+            return JobStack.TryDoNextJob(pManager);
         }
 
 

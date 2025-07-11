@@ -11,7 +11,7 @@ namespace FluffyManager
 {
     internal interface IManagerJob
     {
-        bool TryDoJob();
+        bool TryDoJob(Pawn workingPawn);
     }
 
     public abstract class ManagerJob : IManagerJob, IExposable
@@ -26,7 +26,7 @@ namespace FluffyManager
         public int lastAction;
 
         public Manager manager;
-        public bool    PathBasedDistance;
+        public bool PathBasedDistance;
 
         public int priority;
 
@@ -99,7 +99,7 @@ namespace FluffyManager
             }
         }
 
-        public abstract bool TryDoJob();
+        public abstract bool TryDoJob(Pawn workingPawn);
 
         public abstract void CleanUp();
 
@@ -110,12 +110,12 @@ namespace FluffyManager
             Manager.For( manager ).JobStack.Delete( this, false );
         }
 
-        public virtual float Distance( Thing target, IntVec3 source )
+        public float Distance(Thing target, IntVec3 source, Pawn workingPawn)
         {
             if ( PathBasedDistance )
             {
-                var path = target.Map.pathFinder.FindPath( source, target,
-                                                           TraverseParms.For( TraverseMode.PassDoors, Danger.Some ),
+                var path = target.Map.pathFinder.FindPathNow( source,new LocalTargetInfo(target),workingPawn,
+                                                           PathFinderCostTuning.DefaultTuning,
                                                            PathEndMode.Touch );
                 var cost = path.Found ? path.TotalCost : int.MaxValue;
                 path.ReleaseToPool();

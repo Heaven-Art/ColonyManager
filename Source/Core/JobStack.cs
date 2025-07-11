@@ -166,7 +166,7 @@ namespace FluffyManager
         /// <summary>
         ///     Call the worker for the next available job
         /// </summary>
-        public bool TryDoNextJob()
+        public bool TryDoNextJob(Pawn pManager)
         {
             var job = NextJob;
             if ( job == null ) return false;
@@ -174,8 +174,8 @@ namespace FluffyManager
             // update lastAction
             job.Touch();
 
-            // perform next job if no action was taken
-            if ( !job.TryDoJob() ) return TryDoNextJob();
+            // perform next job if no action was taken 
+            if ( !job.TryDoJob(pManager) ) return TryDoNextJob(pManager);
 
             return true;
         }

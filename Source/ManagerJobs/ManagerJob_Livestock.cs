@@ -437,7 +437,7 @@ namespace FluffyManager
                 _history.Update(Trigger.Counts);
         }
 
-        public override bool TryDoJob()
+        public override bool TryDoJob(Pawn workingPawn)
         {
             // work done?
             var actionTaken = false;
@@ -463,7 +463,7 @@ namespace FluffyManager
             DoAreaRestrictions(ref actionTaken);
 
             // handle taming
-            DoTamingJobs(ref actionTaken);
+            DoTamingJobs(ref actionTaken, workingPawn);
 
             // follow settings
             DoFollowSettings(ref actionTaken);
@@ -624,7 +624,7 @@ namespace FluffyManager
             }
         }
 
-        private void DoTamingJobs(ref bool actionTaken)
+        private void DoTamingJobs(ref bool actionTaken, Pawn workingPawn)
         {
             if (!TryTameMore) return;
 
@@ -658,7 +658,7 @@ namespace FluffyManager
                         continue;
 
                     animals =
-                        animals.OrderBy(p => p.ageTracker.AgeBiologicalTicks / Distance(p, position)).ToList();
+                        animals.OrderBy(p => p.ageTracker.AgeBiologicalTicks / Distance(p, position, workingPawn)).ToList();
 
 #if DEBUG_LIFESTOCK
                     Log.Message( "Wild: " + animals.Count );

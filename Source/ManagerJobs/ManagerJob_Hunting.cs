@@ -6,6 +6,7 @@ using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.AI;
 using static FluffyManager.Constants;
 
 namespace FluffyManager
@@ -169,11 +170,13 @@ namespace FluffyManager
             var thing = designation.target.Thing;
             return "Fluffy.Manager.DesignationLabel".Translate(
                 thing.LabelCap,
-                Distance( thing, manager.map.GetBaseCenter() ).ToString( "F0" ),
+                // TODO
+                // review this, was commented due to the need of a source pawn for pathing calculations
+                // Distance( thing, manager.map.GetBaseCenter()).ToString( "F0" ),
                 thing.GetStatValue( StatDefOf.MeatAmount ).ToString( "F0" ),
                 thing.def.race.meatDef.LabelCap );
         }
-
+        
         public override void DrawListEntry( Rect rect, bool overview = true, bool active = true )
         {
             // (detailButton) | name | (bar | last update)/(stamp) -> handled in Utilities.DrawStatusForListEntry
@@ -316,7 +319,7 @@ namespace FluffyManager
             History.Update( Trigger.CurrentCount, GetMeatInCorpses(), GetMeatInDesignations() );
         }
 
-        public override bool TryDoJob()
+        public override bool TryDoJob(Pawn workingPawn)
         {
             // did we do any work?
             var workDone = false;
@@ -335,7 +338,7 @@ namespace FluffyManager
 
             // get a list of huntable animals sorted by distance (ignoring obstacles) and expected meat count.
             // note; attempt to balance cost and benefit, current formula: value = meat / ( distance ^ 2)
-            var huntableAnimals = GetHuntableAnimalsSorted();
+            var huntableAnimals = GetHuntableAnimalsSorted(workingPawn);
 
             // while totalCount < count AND we have animals that can be designated, designate animal.
             for ( var i = 0; i < huntableAnimals.Count && totalCount < Trigger.TargetCount; i++ )
@@ -413,14 +416,14 @@ namespace FluffyManager
         }
 
         // TODO: refactor into a yielding iterator for performance?
-        private List<Pawn> GetHuntableAnimalsSorted()
+        private List<Pawn> GetHuntableAnimalsSorted(Pawn workingPawn)
         {
             // get the 'home' position
             var position = manager.map.GetBaseCenter();
 
             return manager.map.mapPawns.AllPawns
                           .Where( p => IsValidHuntingTarget( p, false ) )
-                          .OrderBy( p => -p.EstimatedMeatCount() / Distance( p, position ) )
+                          .OrderBy( p => -p.EstimatedMeatCount() / Distance( p, position, workingPawn ) )
                           .ToList();
         }
 

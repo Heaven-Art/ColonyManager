@@ -7,6 +7,7 @@ using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.AI;
 using static FluffyManager.Constants;
 
 namespace FluffyManager
@@ -175,7 +176,9 @@ namespace FluffyManager
                 var building = designation.target.Thing;
                 return "Fluffy.Manager.DesignationLabel".Translate(
                     building.LabelCap,
-                    Distance(building, manager.map.GetBaseCenter()).ToString("F0"),
+                    // TODO
+                    // review this, was commented due to the need of a source pawn for pathing calculations
+                    // Distance(building, manager.map.GetBaseCenter()).ToString("F0"),
                     "?", "?");
             }
 
@@ -184,7 +187,9 @@ namespace FluffyManager
                 var mineable = designation.target.Cell.GetFirstMineable(manager.map);
                 return "Fluffy.Manager.DesignationLabel".Translate(
                     mineable.LabelCap,
-                    Distance(mineable, manager.map.GetBaseCenter()).ToString("F0"),
+                    // TODO
+                    // review this, was commented due to the need of a source pawn for pathing calculations
+                    // Distance(mineable, manager.map.GetBaseCenter()).ToString("F0"),
                     GetCountInMineral(mineable),
                     GetMaterialsInMineral(mineable.def)?.First().LabelCap ?? "?");
             }
@@ -337,13 +342,13 @@ namespace FluffyManager
             return 0;
         }
 
-        public List<Building> GetDeconstructibleBuildingsSorted()
+        public List<Building> GetDeconstructibleBuildingsSorted(Pawn workingPawn)
         {
             var position = manager.map.GetBaseCenter();
 
             return manager.map.listerThings.ThingsInGroup(ThingRequestGroup.BuildingArtificial).OfType<Building>()
                           .Where(IsValidDeconstructionTarget)
-                          .OrderBy(b => -GetCountInBuilding(b) / Distance(b, position))
+                          .OrderBy(b => -GetCountInBuilding(b) / Distance(b, position, workingPawn))
                           .ToList();
         }
 
@@ -392,16 +397,16 @@ namespace FluffyManager
             return list;
         }
 
-        public List<Mineable> GetMinableMineralsSorted()
+        public List<Mineable> GetMinableMineralsSorted(Pawn workingPawn)
         {
             var position = manager.map.GetBaseCenter();
 
             return manager.map.listerThings.AllThings.OfType<Mineable>()
                           .Where(IsValidMiningTarget)
-                          .OrderBy(r => -GetCountInMineral(r) / Distance(r, position))
+                          .OrderBy(r => -GetCountInMineral(r) / Distance(r, position, workingPawn))
                           .ToList();
         }
-
+        
         public bool IsARoofSupport_Advanced(Building building)
         {
             if (!CheckRoofSupport || !CheckRoofSupportAdvanced)
@@ -453,7 +458,8 @@ namespace FluffyManager
             {
                 for (var j = i + 1; j < adjacent.Count(); j++)
                 {
-                    var path = manager.map.pathFinder.FindPath(adjacent[i], adjacent[j],
+                    // TODO check this, it worked out of the box, and I assume it shouldn't
+                    var path = manager.map.pathFinder.FindPathNow(adjacent[i], adjacent[j],
                                                                 TraverseParms.For(
                                                                     TraverseMode.NoPassClosedDoors, Danger.Some));
                     var cost = path.TotalCost;
@@ -630,7 +636,7 @@ namespace FluffyManager
             History.Update(Trigger.CurrentCount, GetCountInChunks(), GetCountInDesignations());
         }
 
-        public override bool TryDoJob()
+        public override bool TryDoJob(Pawn workingPawn)
         {
             var workDone = false;
 
@@ -641,7 +647,7 @@ namespace FluffyManager
 
             if (DeconstructBuildings)
             {
-                var buildings = GetDeconstructibleBuildingsSorted();
+                var buildings = GetDeconstructibleBuildingsSorted(workingPawn);
                 for (var i = 0; i < buildings.Count && count < Trigger.TargetCount; i++)
                 {
                     AddDesignation(buildings[i], DesignationDefOf.Deconstruct);
@@ -649,7 +655,7 @@ namespace FluffyManager
                 }
             }
 
-            var minerals = GetMinableMineralsSorted();
+            var minerals = GetMinableMineralsSorted(workingPawn);
             for (var i = 0; i < minerals.Count && count < Trigger.TargetCount; i++)
                 if (!IsARoofSupport_Advanced(minerals[i]))
                 {

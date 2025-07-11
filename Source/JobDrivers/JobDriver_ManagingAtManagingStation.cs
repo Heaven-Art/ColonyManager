@@ -74,7 +74,7 @@ namespace FluffyManager
                 // are we done yet?
                 if ( workDone > workNeeded )
                 {
-                    Manager.For( pawn.Map ).TryDoWork();
+                    Manager.For( pawn.Map ).TryDoWork(toil.actor);
                     ReadyForNextToil();
                 }
             };

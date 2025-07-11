@@ -115,7 +115,7 @@ namespace FluffyManager
             {
                     var source = Utilities.GetBaseCenter( job.manager );
                     var target = UI.MouseCell();
-                    var path = job.manager.map.pathFinder.FindPath( source, target,
+                    var path = job.manager.map.pathFinder.FindPathNow( source, target,
                                                                     TraverseParms.For(
                                                                         TraverseMode.PassDoors, Danger.Some ) );
                     path.DrawPath( null );
@@ -123,7 +123,7 @@ namespace FluffyManager
                 }, false
             );
 
-            base.DoListingItems(inRect, columnWidth);
+            // base.DoListingItems(inRect, columnWidth);
         }
     }
 }

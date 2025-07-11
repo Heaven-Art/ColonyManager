@@ -20,6 +20,15 @@
     },
     "changelog": [
         {
+            "date": "2025-07-11T18:09:18.000Z",
+            "message": "Build for 1.6",
+            "author": {
+                "name": "We're in Heaven",
+                "email": "b.sagres@gmail.com"
+            },
+            "hash": "8DE4BCF325E195961410880A3D6A8ED0A1C29778F147FCA84C1FB1644D16A873"
+        },  
+        {
             "date": "2024-05-11T16:26:23.000Z",
             "message": "Build for 1.5",
             "author": {
