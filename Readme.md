@@ -1,4 +1,4 @@
-Disclaimer: This mod was created by Fluffy, I've only fixed dependencies and got it to build, so far I've not seen any major problems and it seems to work correctly on 1.5.
+Disclaimer: This mod was created by Fluffy, I've only what is needed to get it to build and work as is, so far I've not seen any major problems, and it seems to work correctly on 1.6.
 
 Colony Manager allows you to make colonists do the more tedious parts of managing a colony, making sure you're never out of vital resources again\*.
 
