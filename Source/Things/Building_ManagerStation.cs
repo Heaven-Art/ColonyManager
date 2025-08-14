@@ -1,6 +1,7 @@
 ﻿// Building_ManagerStation.cs
 // Copyright Karel Kroeze, 2017-2020
 
+using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -124,15 +125,22 @@ namespace FluffyManager
                 if ( tick % 30 == Rand.RangeInclusive( 0, 25 ) )
                     SecondaryColourIndex = ( SecondaryColourIndex + 1 ) % _colors.Length;
 
-                // primary colour
-                // TODO
-                // review this, was commented due to the need of a source pawn for pathing calculations
-                // if ( tick % ManagerStation.Props.speed == 0 )
-                //     PrimaryColour = Manager.For( Map ).TryDoWork() ? Color.green : Color.red;
-
-                // blinking on primary
-                if ( tick % 30 == 0 ) PrimaryColourBlinker  = PrimaryColour;
-                if ( tick % 30 == 25 ) PrimaryColourBlinker = Color.black;
+                List<Pawn> activeColonists = GetFreeColonists(Map);
+                
+                if (activeColonists.Count > 0)
+                {
+                    // get the first pawn in the player's list of available colonists, distance calculations will be made based on their position
+                    var pawn = activeColonists[0];
+                    if (pawn == null) return;
+                    
+                    // primary colour
+                    if ( tick % ManagerStation.Props.speed == 0 )
+                        PrimaryColour = Manager.For( Map ).TryDoWork(pawn) ? Color.green : Color.red;
+                    
+                    // blinking on primary
+                    if ( tick % 30 == 0 ) PrimaryColourBlinker  = PrimaryColour;
+                    if ( tick % 30 == 25 ) PrimaryColourBlinker = Color.black;
+                }
             }
 
             // apply changes
@@ -157,6 +165,15 @@ namespace FluffyManager
 
                 _glowDirty = false;
             }
+        }
+        
+        // Get ACTIVE colonists in a specific map
+        private List<Pawn> GetFreeColonists(Map map)
+        {
+            if (map == null || map.mapPawns == null) 
+                return new List<Pawn>();
+    
+            return map.mapPawns.FreeColonists; // Returns only free, capable colonists
         }
     }
 
