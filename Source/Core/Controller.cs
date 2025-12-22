@@ -17,6 +17,7 @@ namespace FluffyManager
             // apply fixes
             var harmony = new Harmony( "fluffy.colonymanager" );
             harmony.PatchAll( Assembly.GetExecutingAssembly() );
+            Harmony_MapLifecycle.Apply( harmony );
 
             mySettings = GetSettings<Settings>();
         }

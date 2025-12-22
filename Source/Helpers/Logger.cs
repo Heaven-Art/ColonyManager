@@ -21,5 +21,20 @@ namespace FluffyManager
         {
             Log.Message( identifier + " :: " + message );
         }
+
+        public static void Warning( string message )
+        {
+            Log.Warning( identifier + " :: " + message );
+        }
+
+        public static void Error( string message )
+        {
+            Log.Error( identifier + " :: " + message );
+        }
+
+        public static void Message( string message )
+        {
+            Log.Message( identifier + " :: " + message );
+        }
     }
 }

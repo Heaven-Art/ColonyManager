@@ -546,5 +546,76 @@ namespace FluffyManager
                    // reachable
                 && IsReachable( target );
         }
+
+        // ---------------------------
+        // Odyssey travel (SwapMap) persistence
+        // ---------------------------
+        public override ManagerJobRecord ToMapSwapRecord()
+        {
+            var rec = new ManagerJobRecord();
+            rec.FillBaseFromJob( this );
+
+            Dictionary<string, bool> clearAreasByLabel = null;
+            if ( ClearAreas != null )
+                clearAreasByLabel = ClearAreas.Where( kvp => kvp.Key != null )
+                                              .ToDictionary( kvp => kvp.Key.Label, kvp => kvp.Value );
+
+            rec.config = new ForestryJobConfig
+            {
+                trigger = Trigger.ToConfig(),
+                type = Type,
+                allowedTrees = new Dictionary<ThingDef, bool>( AllowedTrees ),
+                allowSaplings = AllowSaplings,
+                clearWindCells = ClearWindCells,
+                clearAreasByLabel = clearAreasByLabel ?? new Dictionary<string, bool>(),
+                loggingAreaLabel = LoggingArea?.Label
+            };
+
+            return rec;
+        }
+
+        public override void ApplyMapSwapRecord( ManagerJobRecord rec )
+        {
+            var cfg = rec?.config as ForestryJobConfig;
+            if ( cfg == null )
+                return;
+
+            rec.ApplyBaseToJob( this );
+
+            Type = cfg.type;
+            AllowedTrees = cfg.allowedTrees ?? new Dictionary<ThingDef, bool>();
+            AllowSaplings = cfg.allowSaplings;
+            ClearWindCells = cfg.clearWindCells;
+            LoggingArea = ManagerProfileHelpers.FindAreaByLabel( manager.map, cfg.loggingAreaLabel );
+
+            // Trigger
+            if ( Trigger == null )
+                Trigger = new Trigger_Threshold( this );
+            Trigger.ApplyConfig( cfg.trigger, manager.map );
+
+            // Rebind clear areas by label against current map areas
+            try
+            {
+                UpdateClearAreas();
+                if ( cfg.clearAreasByLabel != null )
+                {
+                    foreach ( var area in ClearAreas.Keys.ToList() )
+                    {
+                        if ( area == null )
+                            continue;
+
+                        bool allowed;
+                        if ( cfg.clearAreasByLabel.TryGetValue( area.Label, out allowed ) )
+                            ClearAreas[area] = allowed;
+                        else
+                            ClearAreas[area] = false;
+                    }
+                }
+            }
+            catch
+            {
+                // best effort only
+            }
+        }
     }
 }
