@@ -38,6 +38,7 @@
 				<compClass>FluffyManager.Comp_ManagerStation</compClass>
 				<speed>1000</speed>
 			</li>
+			<li Class="FluffyManager.CompProperties_MapSwapManagerProfileCarrier" />
 			<li Class="CompProperties_Forbiddable"/>
 		</comps>
 	</ThingDef>
@@ -89,6 +90,7 @@
 				<compClass>FluffyManager.Comp_ManagerStation</compClass>
 				<speed>500</speed>
 			</li>
+			<li Class="FluffyManager.CompProperties_MapSwapManagerProfileCarrier" />
 			<li Class="CompProperties_Forbiddable"/>
 			<li Class="CompProperties_Flickable"/>
 			<li Class="CompProperties_Breakdownable"/>
@@ -137,6 +139,7 @@
 				<compClass>FluffyManager.Comp_ManagerStation</compClass>
 				<speed>250</speed>
 			</li>
+			<li Class="FluffyManager.CompProperties_MapSwapManagerProfileCarrier" />
 			<li Class="CompProperties_Glower">
 				<compClass>CompGlower</compClass>
 				<glowRadius>3</glowRadius>

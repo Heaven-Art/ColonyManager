@@ -705,5 +705,53 @@ namespace FluffyManager
                                                                                          )); // equates to SpawnedDesignationsOfDef, with two defs.
             _designations = _designations.Intersect(designations).ToList();
         }
+
+        // ---------------------------
+        // Odyssey travel (SwapMap) persistence
+        // ---------------------------
+        public override ManagerJobRecord ToMapSwapRecord()
+        {
+            var rec = new ManagerJobRecord();
+            rec.FillBaseFromJob( this );
+
+            rec.config = new MiningJobConfig
+            {
+                trigger = Trigger.ToConfig(),
+                allowedMinerals = new Dictionary<ThingDef, bool>( AllowedMinerals ),
+                allowedBuildings = new Dictionary<ThingDef, bool>( AllowedBuildings ),
+                miningAreaLabel = MiningArea?.Label,
+                sync = Sync,
+                syncFilterAndAllowed = SyncFilterAndAllowed,
+                deconstructBuildings = DeconstructBuildings,
+                checkRoofSupport = CheckRoofSupport,
+                checkRoofSupportAdvanced = CheckRoofSupportAdvanced,
+                checkRoomDivision = CheckRoomDivision
+            };
+
+            return rec;
+        }
+
+        public override void ApplyMapSwapRecord( ManagerJobRecord rec )
+        {
+            var cfg = rec?.config as MiningJobConfig;
+            if ( cfg == null )
+                return;
+
+            rec.ApplyBaseToJob( this );
+
+            AllowedMinerals = cfg.allowedMinerals ?? new Dictionary<ThingDef, bool>();
+            AllowedBuildings = cfg.allowedBuildings ?? new Dictionary<ThingDef, bool>();
+            MiningArea = ManagerProfileHelpers.FindAreaByLabel( manager.map, cfg.miningAreaLabel );
+            Sync = cfg.sync;
+            SyncFilterAndAllowed = cfg.syncFilterAndAllowed;
+            DeconstructBuildings = cfg.deconstructBuildings;
+            CheckRoofSupport = cfg.checkRoofSupport;
+            CheckRoofSupportAdvanced = cfg.checkRoofSupportAdvanced;
+            CheckRoomDivision = cfg.checkRoomDivision;
+
+            if ( Trigger == null )
+                Trigger = new Trigger_Threshold( this );
+            Trigger.ApplyConfig( cfg.trigger, manager.map );
+        }
     }
 }

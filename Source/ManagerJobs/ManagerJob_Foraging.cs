@@ -359,5 +359,45 @@ namespace FluffyManager
                    // reachable
                 && IsReachable( target );
         }
+
+        // ---------------------------
+        // Odyssey travel (SwapMap) persistence
+        // ---------------------------
+        public override ManagerJobRecord ToMapSwapRecord()
+        {
+            var rec = new ManagerJobRecord();
+            rec.FillBaseFromJob( this );
+
+            rec.config = new ForagingJobConfig
+            {
+                trigger = Trigger.ToConfig(),
+                allowedPlants = new Dictionary<ThingDef, bool>( AllowedPlants ),
+                foragingAreaLabel = ForagingArea?.Label,
+                forceFullyMature = ForceFullyMature,
+                sync = Sync,
+                syncFilterAndAllowed = SyncFilterAndAllowed
+            };
+
+            return rec;
+        }
+
+        public override void ApplyMapSwapRecord( ManagerJobRecord rec )
+        {
+            var cfg = rec?.config as ForagingJobConfig;
+            if ( cfg == null )
+                return;
+
+            rec.ApplyBaseToJob( this );
+
+            AllowedPlants = cfg.allowedPlants ?? new Dictionary<ThingDef, bool>();
+            ForagingArea = ManagerProfileHelpers.FindAreaByLabel( manager.map, cfg.foragingAreaLabel );
+            ForceFullyMature = cfg.forceFullyMature;
+            Sync = cfg.sync;
+            SyncFilterAndAllowed = cfg.syncFilterAndAllowed;
+
+            if ( Trigger == null )
+                Trigger = new Trigger_Threshold( this );
+            Trigger.ApplyConfig( cfg.trigger, manager.map );
+        }
     }
 }

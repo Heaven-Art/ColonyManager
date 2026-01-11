@@ -773,5 +773,129 @@ namespace FluffyManager
                 }
             }
         }
+
+        // ---------------------------
+        // Odyssey travel (SwapMap) persistence
+        // ---------------------------
+        public override ManagerJobRecord ToMapSwapRecord()
+        {
+            var rec = new ManagerJobRecord();
+            rec.FillBaseFromJob( this );
+
+            var restrictLabels = new List<string>();
+            if ( RestrictArea != null && RestrictArea.Count > 0 )
+                restrictLabels.AddRange( RestrictArea.Select( a => a?.Label ) );
+
+            rec.config = new LivestockJobConfig
+            {
+                pawnKind = Trigger?.pawnKind,
+                countTargets = Trigger?.CountTargets != null
+                    ? new Dictionary<AgeAndSex, int>( Trigger.CountTargets )
+                    : Utilities_Livestock.AgeSexArray.ToDictionary( k => k, v => 5 ),
+
+                butcherBonded = ButcherBonded,
+                butcherExcess = ButcherExcess,
+                butcherPregnant = ButcherPregnant,
+                butcherTrained = ButcherTrained,
+                respectBonds = RespectBonds,
+
+                tryTameMore = TryTameMore,
+                tameAreaLabel = TameArea?.Label,
+
+                restrictToArea = RestrictToArea,
+                restrictAreaLabels = restrictLabels,
+
+                sendToSlaughterArea = SendToSlaughterArea,
+                slaughterAreaLabel = SlaughterArea?.Label,
+                sendToMilkingArea = SendToMilkingArea,
+                milkAreaLabel = MilkArea?.Label,
+                sendToShearingArea = SendToShearingArea,
+                shearAreaLabel = ShearArea?.Label,
+                sendToTrainingArea = SendToTrainingArea,
+                trainingAreaLabel = TrainingArea?.Label,
+
+                setFollow = SetFollow,
+                followDrafted = FollowDrafted,
+                followFieldwork = FollowFieldwork,
+                followTraining = FollowTraining,
+
+                masters = Masters,
+                master = Master,
+                trainers = Trainers,
+                trainer = Trainer,
+
+                training = Training
+            };
+
+            return rec;
+        }
+
+        public override void ApplyMapSwapRecord( ManagerJobRecord rec )
+        {
+            var cfg = rec?.config as LivestockJobConfig;
+            if ( cfg == null )
+                return;
+
+            rec.ApplyBaseToJob( this );
+
+            // Trigger
+            if ( Trigger == null )
+                Trigger = new Trigger_PawnKind( manager );
+            Trigger.pawnKind = cfg.pawnKind;
+            Trigger.CountTargets = cfg.countTargets ??
+                                   Utilities_Livestock.AgeSexArray.ToDictionary( k => k, v => 5 );
+
+            // Training / butchery / taming / follow
+            Training = cfg.training ?? new TrainingTracker();
+            ButcherBonded = cfg.butcherBonded;
+            ButcherExcess = cfg.butcherExcess;
+            ButcherPregnant = cfg.butcherPregnant;
+            ButcherTrained = cfg.butcherTrained;
+            RespectBonds = cfg.respectBonds;
+
+            TryTameMore = cfg.tryTameMore;
+
+            SetFollow = cfg.setFollow;
+            FollowDrafted = cfg.followDrafted;
+            FollowFieldwork = cfg.followFieldwork;
+            FollowTraining = cfg.followTraining;
+
+            Masters = cfg.masters;
+            Master = cfg.master;
+            Trainers = cfg.trainers;
+            Trainer = cfg.trainer;
+
+            // Areas (best-effort)
+            TameArea = ManagerProfileHelpers.FindAreaByLabel( manager.map, cfg.tameAreaLabel );
+            SlaughterArea = ManagerProfileHelpers.FindAreaByLabel( manager.map, cfg.slaughterAreaLabel );
+            MilkArea = ManagerProfileHelpers.FindAreaByLabel( manager.map, cfg.milkAreaLabel );
+            ShearArea = ManagerProfileHelpers.FindAreaByLabel( manager.map, cfg.shearAreaLabel );
+            TrainingArea = ManagerProfileHelpers.FindAreaByLabel( manager.map, cfg.trainingAreaLabel );
+
+            RestrictToArea = cfg.restrictToArea;
+            if ( RestrictArea == null )
+                RestrictArea = Utilities_Livestock.AgeSexArray.Select( k => (Area)null ).ToList();
+
+            // Ensure list length matches age/sex array
+            while ( RestrictArea.Count < Utilities_Livestock.AgeSexArray.Length )
+                RestrictArea.Add( null );
+            while ( RestrictArea.Count > Utilities_Livestock.AgeSexArray.Length )
+                RestrictArea.RemoveAt( RestrictArea.Count - 1 );
+
+            if ( cfg.restrictAreaLabels != null )
+            {
+                for ( var i = 0; i < RestrictArea.Count && i < cfg.restrictAreaLabels.Count; i++ )
+                    RestrictArea[i] = ManagerProfileHelpers.FindAreaByLabel( manager.map, cfg.restrictAreaLabels[i] );
+            }
+
+            // Sending toggles
+            SendToSlaughterArea = cfg.sendToSlaughterArea;
+            SendToMilkingArea = cfg.sendToMilkingArea;
+            SendToShearingArea = cfg.sendToShearingArea;
+            SendToTrainingArea = cfg.sendToTrainingArea;
+
+            // cached label no longer valid after applying
+            _cachedLabel = null;
+        }
     }
 }

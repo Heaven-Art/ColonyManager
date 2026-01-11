@@ -451,5 +451,50 @@ namespace FluffyManager
                      HuntingGrounds.ActiveCells.Contains( target.Position ) )
                 && IsReachable( target );
         }
+
+        // ---------------------------
+        // Odyssey travel (SwapMap) persistence
+        // ---------------------------
+        public override ManagerJobRecord ToMapSwapRecord()
+        {
+            var rec = new ManagerJobRecord();
+            rec.FillBaseFromJob( this );
+
+            rec.config = new HuntingJobConfig
+            {
+                trigger = Trigger.ToConfig(),
+                allowedAnimals = new Dictionary<PawnKindDef, bool>( AllowedAnimals ),
+                huntingAreaLabel = HuntingGrounds?.Label,
+                unforbidCorpses = UnforbidCorpses,
+                allowHumanLikeMeat = AllowHumanLikeMeat,
+                allowInsectMeat = AllowInsectMeat
+            };
+
+            return rec;
+        }
+
+        public override void ApplyMapSwapRecord( ManagerJobRecord rec )
+        {
+            var cfg = rec?.config as HuntingJobConfig;
+            if ( cfg == null )
+                return;
+
+            // Base fields
+            rec.ApplyBaseToJob( this );
+
+            // Config fields
+            AllowedAnimals = cfg.allowedAnimals ?? new Dictionary<PawnKindDef, bool>();
+            HuntingGrounds = ManagerProfileHelpers.FindAreaByLabel( manager.map, cfg.huntingAreaLabel );
+            UnforbidCorpses = cfg.unforbidCorpses;
+
+            // Trigger
+            if ( Trigger == null )
+                Trigger = new Trigger_Threshold( this );
+            Trigger.ApplyConfig( cfg.trigger, manager.map );
+
+            // Human/insect meat flags (also update filter)
+            AllowHumanLikeMeat = cfg.allowHumanLikeMeat;
+            AllowInsectMeat = cfg.allowInsectMeat;
+        }
     }
 }

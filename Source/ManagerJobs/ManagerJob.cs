@@ -129,6 +129,20 @@ namespace FluffyManager
 
         public abstract void DrawOverviewDetails( Rect rect );
 
+        // ---------------------------
+        // Odyssey travel (SwapMap) persistence
+        // ---------------------------
+        // Jobs are persistable by design; individual jobs may override these to provide
+        // a map-independent record for transfer across Odyssey PreSwapMap/PostSwapMap.
+        public virtual ManagerJobRecord ToMapSwapRecord()
+        {
+            return null;
+        }
+
+        public virtual void ApplyMapSwapRecord( ManagerJobRecord rec )
+        {
+        }
+
         public virtual bool IsReachable( Thing target )
         {
             return !target.Position.Fogged( manager.map )
